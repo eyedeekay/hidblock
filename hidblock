@@ -18,6 +18,9 @@ rule contents(10-usbblock.rules):\n
 	RUN+=\"/bin/sh -c 'echo 0 >/sys\$DEVPATH/../authorized'\"\n
 "
 
+#Generate the rules file for blocking USB HID's.
+#echo rule file into place /etc/udev/rules.d/10-usbblock.rules
+
 installrule () {
 	if [ "/etc/udev/rules.d/10-usbblock.rules" -e ]
 	then
@@ -31,14 +34,20 @@ installrule () {
 	fi
 }
 
+#Enable USB HID Blocking rules(Block new USB HID's)
 block () {
+	#Uncomment out rules line then
+	#Restart the udev service
 	sudo sed -i 's/#//' /etc/udev/rules.d/10-usbblock.rules && \
-	udevadm control --reload-rules
+	sudo udevadm control --reload-rules
 }
 
+#Disable USB HID Blocking rules(Unblock new USB HID's)
 unblock () {
+	#Comment out rules line then
+	#Restart the udev service
 	sudo sed -i 's/^/#/' /etc/udev/rules.d/10-usbblock.rules && \
-	udevadm control --reload-rules
+	sudo udevadm control --reload-rules
 }
 
 if [ "$1" = "unblock" ]; then
