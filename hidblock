@@ -1,0 +1,58 @@
+#! /bin/sh
+
+HELP="This script adds rules to your /etc/udev/rules.d/ folder that disable\n
+new USB HID's from attaching to your computer. New USB mice and keyboards\n
+will not work until you disable the rules. This should prevent USB devices \n
+from impersonating Human Interface Devices in order to prevent BadUSB attacks.\n
+\n
+usage:\n
+\t	./hidblock < block || b > = Block all new USB Human Interface Devices\n
+\t	./hidblock < unblock || u > = Unblock new USB Human Interface Devices\n
+\t	./hidblock < install || i > = Install(or reinstall over) the rules file\n
+
+file location:\n
+\t 	/etc/udev/rules.d/10-usbblock.rules
+
+rule contents(10-usbblock.rules):\n
+\t	#ACTION==\"add\", ATTR{bInterfaceClass}==\"03\" 
+	RUN+=\"/bin/sh -c 'echo 0 >/sys\$DEVPATH/../authorized'\"\n
+"
+
+installrule () {
+	if [ "/etc/udev/rules.d/10-usbblock.rules" -e ]
+	then
+		echo "Rules file available"
+	else
+		echo "Generating the new USB HID rules file."
+		RULEFILE="#ACTION==\"add\", ATTR{bInterfaceClass}==\"03\""
+		RULEFILE="$RULEFILE RUN+=\"/bin/sh -c "
+		RULEFILE="$RULEFILE 'echo 0 >/sys\$DEVPATH/../authorized'\""
+		echo $RULEFILE | sudo tee /etc/udev/rules.d/10-usbblock.rules
+	fi
+}
+
+block () {
+	sudo sed -i 's/#//' /etc/udev/rules.d/10-usbblock.rules && \
+	udevadm control --reload-rules
+}
+
+unblock () {
+	sudo sed -i 's/^/#/' /etc/udev/rules.d/10-usbblock.rules && \
+	udevadm control --reload-rules
+}
+
+if [ "$1" = "unblock" ]; then
+	unblock
+elif [ "$1" = "block" ]; then
+	block
+elif [ "$1" = "b" ]; then
+        block
+elif [ "$1" = "u" ]; then
+        unblock
+elif [ "$1" = "install" ]; then
+	installrule
+elif [ "$1" = "i" ]; then
+	installrule
+else
+	echo -e $HELP
+fi
