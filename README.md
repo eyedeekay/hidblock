@@ -9,13 +9,13 @@ will not work until you disable the rules. This should prevent USB devices
 from impersonating Human Interface Devices in order to prevent BadUSB attacks.    
  
 usage:  
-       ./hidblock < block || b > = Block all new USB Human Interface Devices  
-       ./hidblock < unblock || u > = Unblock new USB Human Interface Devices  
-       ./hidblock < install || i > = Install(or reinstall over) the rules file    
+        ./hidblock < block || b > = Block all new USB Human Interface Devices  
+        ./hidblock < unblock || u > = Unblock new USB Human Interface Devices  
+        ./hidblock < install || i > = Install(or reinstall over) the rules file    
 
 file location:  
-       /etc/udev/rules.d/10-usbblock.rules rule contents(10-usbblock.rules):  
-       #ACTION=="add", ATTR{bInterfaceClass}=="03" RUN+="/bin/sh -c 'echo 0 >/sys$DEVPATH/../authorized'"    
+        /etc/udev/rules.d/10-usbblock.rules rule contents(10-usbblock.rules):  
+        #ACTION=="add", ATTR{bInterfaceClass}=="03" RUN+="/bin/sh -c 'echo 0 >/sys$DEVPATH/../authorized'"    
 
 
 [This script uses the top answer from this StackExchange question as a guide.](https://security.stackexchange.com/questions/64524/how-to-prevent-badusb-attacks-on-linux-desktop) Thank you *User10008*.  
