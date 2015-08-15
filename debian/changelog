@@ -1,0 +1,5 @@
+hidblock (0.1-1) unstable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- dyngar-m <dyngar-m@dyngar.local>  Sat, 15 Aug 2015 14:55:16 -0400
