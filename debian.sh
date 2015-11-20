@@ -23,7 +23,7 @@ cd $DEBFOLDERNAME
 dh_make -s --indep --createorig 
 
 mkdir -p debian/tmp
-cp hidblock debian/tmp
+cp * debian/tmp
 
 # Remove make calls
 grep -v makefile debian/rules > debian/rules.new 
