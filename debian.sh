@@ -3,8 +3,12 @@
 SOURCEBINPATH=.
 SOURCEBIN=hidblock
 SOURCEDOC=README.md
-DEBFOLDER=./hidblock
+DEBFOLDER=../hidblock
 DEBVERSION=0.1
+
+cd hidblock 
+
+git pull origin master
 
 DEBFOLDERNAME=$DEBFOLDER-$DEBVERSION
 
