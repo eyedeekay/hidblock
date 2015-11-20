@@ -16,7 +16,7 @@ DEBFOLDERNAME=$DEBFOLDER-$DEBVERSION
 mkdir $DEBFOLDERNAME
 
 # Copy your script to the source dir
-cp $SOURCEBINPATH/$SOURCEBIN $DEBFOLDERNAME 
+cp $SOURCEBINPATH $DEBFOLDERNAME -Rv
 cd $DEBFOLDERNAME
 
 # Create the packaging skeleton (debian/*)
