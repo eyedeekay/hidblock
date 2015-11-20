@@ -15,6 +15,9 @@ mkdir $DEBFOLDERNAME
 cp $SOURCEBINPATH/$SOURCEBIN $DEBFOLDERNAME 
 cd $DEBFOLDERNAME
 
+mkdir -p debian/tmp
+cp hidblock debian/tmp
+
 # Create the packaging skeleton (debian/*)
 dh_make -s --indep --createorig 
 
