@@ -72,16 +72,16 @@ fi
 # enable hidblock blocking when it goes blank or locks, and unblocks it when you
 # unlock the screensaver. This is to prevent BadUSB attacks being used to pilfer
 # encryption keys when an attacker has local access by posing as human 
-# interfaces. You can source this into .profile and call the function there to
-# have it start automatically.
+# interfaces. You can source this into rc.local and call this function to have
+# it run automatically. I'm pretty sure.
 
 hidblock_watch_xscreensaver(){
     if [ -f "/usr/bin/srm" ]; then
         alias rm=srm
     fi
     HIDBLOCK_XSCREEN_UNLOCK="true"
-    if [ -f "$HOME/.hidblockrc" ]; then
-        . "$HOME/.hidblockrc"
+    if [ -f /etc/hidblockrc ]; then
+        . /etc/hidblockrc
     fi
     mkdir -p "$HOME/.config/hidblock/tmp"
     echo true > "$HOME/.config/hidblock/tmp/hidwatch"
