@@ -38,6 +38,7 @@ installrule () {
 block () {
 	#Uncomment out rules line then
 	#Restart the udev service
+        cat /etc/udev/rules.d/10-usbblock.rules | grep -v "#" && \
 	sudo sed -i 's/#//' /etc/udev/rules.d/10-usbblock.rules && \
 	sudo udevadm control --reload-rules
 }
@@ -46,6 +47,7 @@ block () {
 unblock () {
 	#Comment out rules line then
 	#Restart the udev service
+        cat /etc/udev/rules.d/10-usbblock.rules | grep "#" && \
 	sudo sed -i 's/^/#/' /etc/udev/rules.d/10-usbblock.rules && \
 	sudo udevadm control --reload-rules
 }
@@ -65,3 +67,32 @@ elif [ "$1" = "i" ]; then
 else
 	echo -e $HELP
 fi
+
+# You can use this function to watch for your screensaver state to change and
+# enable hidblock blocking when it goes blank or locks, and unblocks it when you
+# unlock the screensaver. This is to prevent BadUSB attacks being used to pilfer
+# encryption keys when an attacker has local access by posing as human 
+# interfaces. You can source this into .profile and call the function there to
+# have it start automatically.
+
+hidblock_watch_xscreensaver(){
+    if [ -f "/usr/bin/srm" ]; then
+        alias rm=srm
+    fi
+    HIDBLOCK_XSCREEN_UNLOCK="true"
+    if [ -f "$HOME/.hidblockrc" ]; then
+        . "$HOME/.hidblockrc"
+    fi
+    mkdir -p "$HOME/.config/hidblock/tmp"
+    echo true > "$HOME/.config/hidblock/tmp/hidwatch"
+    while $(<"$HOME/.config/hidblock/tmp/hidwatch"); do
+        HIDWATCH_XSCREEN=$(<"$HOME/.config/hidblock/tmp/hidwatch")
+        case "`xscreensaver-command -time | egrep -o ' blanked|non-blanked|locked'`" in
+            "blanked")     [ $LAST != "blank" ] && block && LAST="blank" ;;
+            "non-blanked")  [ $LAST != "unblank" ] && [ $HIDBLOCK_XSCREEN_UNLOCK == "true"] && unblock && LAST="unblank" ;;
+            "locked")       [ $LAST != "lock" ] && block && LAST="lock" ;;
+        esac
+    sleep 5
+    done
+    echo false > "$HOME/.config/hidblock/tmp/hidwatch"
+}
