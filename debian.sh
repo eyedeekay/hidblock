@@ -3,14 +3,14 @@
 SOURCEBINPATH=.
 SOURCEBIN=hidblock
 SOURCEDOC=README.md
-DEBFOLDER=../hidblock
+DEBFOLDER=hidblock
 DEBVERSION=0.1
 
 cd hidblock 
 
 git pull origin master
 
-DEBFOLDERNAME=$DEBFOLDER-$DEBVERSION
+DEBFOLDERNAME="../$DEBFOLDER-$DEBVERSION"
 
 # Create your scripts source dir
 mkdir $DEBFOLDERNAME
@@ -32,7 +32,7 @@ mv debian/rules.new debian/rules
 # debian/install must contain the list of scripts to install 
 # as well as the target directory
 echo $SOURCEBIN usr/bin > debian/install 
-echo $SOURCEDOC usr/share/doc/hidblock >> debian/install
+echo $SOURCEDOC usr/share/doc/$DEBFOLDER >> debian/install
 
 # Remove the example files
 rm debian/*.ex
