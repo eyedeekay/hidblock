@@ -4,7 +4,7 @@ SOURCEBINPATH=.
 SOURCEBIN=hidblock
 SOURCEDOC=README.md
 DEBFOLDER=hidblock
-DEBVERSION=0.1
+DEBVERSION=$(date +%Y%m%d)
 
 cd hidblock 
 
