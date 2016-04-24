@@ -6,7 +6,7 @@ SOURCEDOC=README.md
 DEBFOLDER=hidblock
 DEBVERSION=$(date +%Y%m%d)
 
-cd hidblock 
+cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 git pull origin master
 
