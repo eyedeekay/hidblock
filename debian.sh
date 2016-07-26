@@ -25,7 +25,7 @@ cp $TOME $DEBFOLDERNAME -R
 cd $DEBFOLDERNAME
 
 # Create the packaging skeleton (debian/*)
-dh_make -s --indep --createorig 
+dh_make --indep --createorig 
 
 mkdir -p debian/tmp
 cp * debian/tmp
